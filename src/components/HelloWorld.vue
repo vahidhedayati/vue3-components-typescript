@@ -2,44 +2,78 @@
   <div class="hello">
     <h1>{{ msg }}</h1>
     <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
+      Name: {{ name }} Age: {{ age }}<br />
+      Name: {{ name1 }} Age: {{ age1 }}
+      <br />
+
+      Our list<br />
+
+      <button @click="handleClick('title')">Title</button>
+      <button @click="handleClick('location')">location</button>
+      <button @click="handleClick('salary')">salary</button>
+      <job-list :jobs="jobs" :order="order" @tada="doLocal" />
+      <br />
+      JobList sent : {{ locallySent }} <br />
+      Watched sent item: {{ watchedItem }}
     </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-router" target="_blank" rel="noopener">router</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-vuex" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-typescript" target="_blank" rel="noopener">typescript</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, reactive, ref, toRefs, watch } from "vue";
+import Job from "../types/jobs";
+import OrderTerm from "../types/OrderTerm";
 
+import JobList from "./JobList.vue";
 export default defineComponent({
-  name: 'HelloWorld',
+  name: "HelloWorld",
+  components: { JobList },
   props: {
     msg: String,
+  },
+  setup() {
+    const state = reactive({
+      name: "test",
+      age: 25 as string | number,
+    });
+
+    const locallySent = ref("");
+    const watchedItem = ref("");
+    state.name = "asd";
+
+    watch(locallySent, function (val, oldValue) {
+      watchedItem.value = "Old " + oldValue + " Current " + val;
+    });
+    function doLocal(content: string) {
+      locallySent.value = content;
+    }
+    const name1 = ref("Test");
+    const age1 = ref<string | number>(25);
+
+    const jobs = ref<Job[]>([
+      { title: "aellie", location: "north street", salary: 2.4, id: 2 },
+      { title: "dandd", location: "down town", salary: 12.22, id: 1 },
+      { title: "zzz", location: "ziggy sat", salary: 1.1, id: 3 },
+      ///{1title: '253', location: 'aaa',salary: 12.22 ,id: 1},
+    ]);
+
+    const order = ref<OrderTerm>("title");
+
+    const handleClick = (term: OrderTerm) => {
+      order.value = term;
+    };
+
+    return {
+      ...toRefs(state),
+      name1,
+      age1,
+      jobs,
+      handleClick,
+      order,
+      locallySent,
+      doLocal,
+      watchedItem,
+    };
   },
 });
 </script>
