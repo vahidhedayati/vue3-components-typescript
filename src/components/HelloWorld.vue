@@ -1,33 +1,40 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <p>
-      Name: {{ name }} Age: {{ age }}<br />
-      Name: {{ name1 }} Age: {{ age1 }}
-      <br />
-
-      Our list<br />
-
-      <button @click="handleClick('title')">Title</button>
-      <button @click="handleClick('location')">location</button>
-      <button @click="handleClick('salary')">salary</button>
-      <job-list :jobs="jobs" :order="order" @tada="doLocal" />
-      <br />
-      JobList sent : {{ locallySent }} <br />
-      Watched sent item: {{ watchedItem }}
-    </p>
+    <hr />
+    Name: {{ name }} Age: {{ age }}<br />
+    Name: {{ name1 }} Age: {{ age1 }}<br />
+    <hr />
+    @get-user <get-users /><br />
+    @get-user-listing<get-user-listing id="a" /><br />
+    Our list<br />
+    <hr />
+    <button @click="handleClick('title')">Title</button>
+    <button @click="handleClick('location')">location</button>
+    <button @click="handleClick('salary')">salary</button>
+    <hr />
+    <job-list :jobs="jobs" :order="order" @tada="doLocal" />
+    <br />
+    <hr />
+    JobList sent : {{ locallySent }} <br />
+    Watched sent item: {{ watchedItem }}
   </div>
 </template>
+  
+
 
 <script lang="ts">
 import { defineComponent, reactive, ref, toRefs, watch } from "vue";
 import Job from "../types/jobs";
+import GetUsers from "./GetUsers.vue";
+import GetUserListing from "./GetUserListing.vue";
 import OrderTerm from "../types/OrderTerm";
 
 import JobList from "./JobList.vue";
+
 export default defineComponent({
   name: "HelloWorld",
-  components: { JobList },
+  components: { JobList, GetUsers, GetUserListing },
   props: {
     msg: String,
   },
@@ -58,7 +65,6 @@ export default defineComponent({
     ]);
 
     const order = ref<OrderTerm>("title");
-
     const handleClick = (term: OrderTerm) => {
       order.value = term;
     };
