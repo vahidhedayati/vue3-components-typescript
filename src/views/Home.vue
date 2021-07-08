@@ -1,6 +1,13 @@
 <template>
   <div class="home">
-    <HelloWorld msg="Welcome " />
+    <Suspense>
+      <template #default>
+        <HelloWorld msg="Welcome " />
+      </template>
+      <template #fallback>
+        <div>Loading...</div>
+      </template>
+    </Suspense>
   </div>
 </template>
 
