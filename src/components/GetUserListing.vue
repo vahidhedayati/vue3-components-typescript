@@ -1,18 +1,6 @@
 <template>
   <div class="hell">
-    <suspense>
-      <template #default>
-        {{ userListing }}@userListing
-        <AsyncUser
-          v-for="user in userListing.data"
-          :key="user.id"
-          :user="user"
-        />
-      </template>
-      <template #fallback>
-        <div>Loading...</div>
-      </template>
-    </suspense>
+    <AsyncUser v-for="user in userListing.data" :key="user.id" :user="user" />
   </div>
 </template>
 <script lang="ts">
@@ -28,9 +16,7 @@ const AsyncUser = defineAsyncComponent({
 
 export default {
   async setup() {
-    console.log("a1aaa");
     const { userListing } = await users();
-    console.log(" 0aaa0 " + JSON.stringify(userListing));
     return {
       userListing,
     };

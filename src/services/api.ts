@@ -16,7 +16,6 @@ export default function useApi<T>(
   const error: Ref<T | undefined> = ref();
   const request: ApiRequest = async () => {
     try {
-      console.log('1')
       const res = await fetch(url, options);
       const data = await res.json();
       response.value = data;

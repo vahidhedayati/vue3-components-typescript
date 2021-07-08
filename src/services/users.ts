@@ -29,6 +29,7 @@ export default async function users(): userList {
   const loaded = ref(false);
 
   if (loaded.value === false) {
+    console.log('getting users ' + new Date())
     await request();
     loaded.value = true;
   }
